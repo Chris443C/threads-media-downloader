@@ -1,0 +1,26 @@
+name: 🤖 AI Threat Intelligence
+
+on:
+  schedule:
+    - cron: "0 */6 * * *"  # Runs every 6 hours
+  workflow_dispatch:  # Allow manual triggering
+
+jobs:
+  gather_threat_intel:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v3
+
+    - name: Install AI Dependencies
+      run: pip install openai numpy pandas requests
+
+    - name: Fetch Threat Intelligence
+      run: python .github/scripts/fetch_threat_intel.py
+
+    - name: Correlate Threats with Internal Logs
+      run: python .github/scripts/correlate_threats.py
+
+    - name: Alert on Active Threats
+      run: python .github/scripts/send_threat_alerts.py

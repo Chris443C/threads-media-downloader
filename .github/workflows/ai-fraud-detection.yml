@@ -1,0 +1,22 @@
+name: 🤖 AI Fraud Detection
+
+on:
+  schedule:
+    - cron: "0 * * * *"  # Runs hourly
+
+jobs:
+  detect_fraud:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v3
+
+    - name: Install AI Dependencies
+      run: pip install openai numpy pandas scikit-learn requests
+
+    - name: Run AI Fraud Detection
+      run: python .github/scripts/ai_fraud_detector.py
+
+    - name: Trigger Fraud Alerts
+      run: python .github/scripts/send_fraud_alerts.py

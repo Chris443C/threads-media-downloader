@@ -1,0 +1,33 @@
+name: 🛡️ Snyk Security Scan
+
+on:
+  pull_request:
+    branches:
+      - main
+  schedule:
+    - cron: "0 3 * * 1"  # Runs every Monday at 03:00 UTC
+
+jobs:
+  security_scan:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v2
+
+    - name: Install Snyk CLI
+      run: npm install -g snyk
+
+    - name: Authenticate with Snyk
+      run: snyk auth ${{ secrets.SNYK_TOKEN }}
+
+    - name: Scan Python Dependencies
+      run: snyk test --file=src/requirements.txt --severity-threshold=high
+
+    - name: Scan Docker Image
+      run: snyk container test your-dockerhub-username/threads-downloader:latest --severity-threshold=high
+
+    - name: Scan Kubernetes Deployment
+      run: snyk iac test k8s/deployment.yaml --severity-threshold=high
+
+    - name: Monitor for Continuous Security
+      run: snyk monitor

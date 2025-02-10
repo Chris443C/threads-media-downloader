@@ -1,0 +1,23 @@
+name: 🤖 AI Risk Scoring
+
+on:
+  schedule:
+    - cron: "0 * * * *"  # Runs every hour
+  workflow_dispatch:  # Allow manual triggering
+
+jobs:
+  assess_risk:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v3
+
+    - name: Install AI Dependencies
+      run: pip install openai numpy pandas requests scikit-learn
+
+    - name: Run AI Risk Scoring
+      run: python .github/scripts/ai_risk_scoring.py
+
+    - name: Escalate High-Risk Threats
+      run: python .github/scripts/escalate_risks.py

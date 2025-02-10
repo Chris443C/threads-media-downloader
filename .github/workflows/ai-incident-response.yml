@@ -1,0 +1,23 @@
+name: 🤖 AI Automated Incident Response
+
+on:
+  schedule:
+    - cron: "*/10 * * * *"  # Runs every 10 minutes
+  workflow_dispatch:  # Allow manual triggering
+
+jobs:
+  detect_and_mitigate:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v3
+
+    - name: Install AI Dependencies
+      run: pip install openai numpy pandas requests scikit-learn
+
+    - name: Run AI Threat Detection
+      run: python .github/scripts/ai_threat_detector.py
+
+    - name: Auto-Block Threats
+      run: python .github/scripts/block_threats.py

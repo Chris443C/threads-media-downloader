@@ -1,0 +1,26 @@
+name: 🤖 AI Compliance Monitoring
+
+on:
+  schedule:
+    - cron: "0 4 * * *"  # Runs daily
+  workflow_dispatch:  # Allow manual triggering
+
+jobs:
+  compliance_check:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v3
+
+    - name: Install AI Dependencies
+      run: pip install openai numpy pandas requests
+
+    - name: Run AI Compliance Analysis
+      run: python .github/scripts/ai_compliance_checker.py
+
+    - name: Generate Compliance Report
+      run: python .github/scripts/generate_compliance_report.py
+
+    - name: Send Compliance Alerts
+      run: python .github/scripts/send_compliance_alerts.py

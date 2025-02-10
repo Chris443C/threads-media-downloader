@@ -1,0 +1,22 @@
+name: 🤖 AI Behavioral Analytics
+
+on:
+  schedule:
+    - cron: "0 2 * * *"  # Runs daily
+
+jobs:
+  analyze_behavior:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v3
+
+    - name: Install AI Dependencies
+      run: pip install openai numpy pandas scikit-learn requests matplotlib
+
+    - name: Run AI Behavioral Analysis
+      run: python .github/scripts/ai_user_behavior.py
+
+    - name: Send Alerts for Suspicious Behavior
+      run: python .github/scripts/send_behavior_alerts.py

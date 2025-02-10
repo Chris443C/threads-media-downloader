@@ -1,0 +1,22 @@
+name: 🤖 AI Anomaly Detection
+
+on:
+  schedule:
+    - cron: "0 * * * *"  # Runs hourly
+
+jobs:
+  detect_anomalies:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v3
+
+    - name: Install AI Dependencies
+      run: pip install openai numpy pandas scikit-learn elasticsearch requests
+
+    - name: Run AI Security Analysis
+      run: python .github/scripts/ai_anomaly_detector.py
+
+    - name: Alert on High-Risk Threats
+      run: python .github/scripts/send_alerts.py

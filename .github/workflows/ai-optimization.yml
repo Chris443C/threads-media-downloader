@@ -1,0 +1,34 @@
+name: 🤖 AI Code Optimization
+
+on:
+  push:
+    branches:
+      - main
+  schedule:
+    - cron: "0 2 * * 1"  # Runs every Monday at 02:00 UTC
+
+jobs:
+  optimize_code:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v3
+
+    - name: Install OpenAI API Client
+      run: pip install openai
+
+    - name: Run AI Optimizer
+      run: python .github/scripts/ai_optimizer.py
+
+    - name: Create PR with Optimized Code
+      run: |
+        git config --global user.name "github-actions"
+        git config --global user.email "github-actions@github.com"
+        git checkout -b ai-optimization
+        git add .
+        git commit -m "🤖 AI Code Optimization: Performance Improvements"
+        git push origin ai-optimization
+
+    - name: Open Pull Request
+      run: gh pr create --title "🤖 AI Optimized Code" --body "AI-powered performance enhancements" --base main --head ai-optimization

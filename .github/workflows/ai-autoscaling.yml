@@ -1,0 +1,23 @@
+name: 🤖 AI Auto-Scaling
+
+on:
+  schedule:
+    - cron: "0 * * * *"  # Runs hourly
+
+jobs:
+  scale_predict:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v3
+
+    - name: Install OpenAI API Client
+      run: pip install openai numpy pandas scikit-learn
+
+    - name: Run AI Scaling Predictor
+      run: python .github/scripts/ai_autoscaler.py
+
+    - name: Apply Kubernetes Scaling Recommendations
+      run: |
+        kubectl apply -f k8s/hpa.yaml

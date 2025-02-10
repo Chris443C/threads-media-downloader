@@ -1,0 +1,27 @@
+# Core Dependencies
+requests==2.31.0
+beautifulsoup4==4.12.2
+
+# AI and Machine Learning Libraries
+torch==2.0.1
+transformers==4.30.2
+Pillow==9.5.0
+nsfw-detector==1.0.3
+
+# Data Processing and Utilities
+numpy==1.24.3
+opencv-python==4.7.0.72
+
+# Serverless Deployment
+boto3==1.26.160  # AWS SDK for Python
+google-cloud-functions==1.0.4
+
+# Kubernetes and Helm
+kubernetes==26.1.0
+pyyaml==6.0
+
+# Documentation and PDF Generation
+fpdf==1.7.2
+
+# CI/CD Pipeline
+pygithub==1.58.1

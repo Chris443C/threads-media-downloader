@@ -1,0 +1,22 @@
+name: 🤖 AI Fraud Prediction
+
+on:
+  schedule:
+    - cron: "0 1 * * *"  # Runs daily
+
+jobs:
+  predict_fraud:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v3
+
+    - name: Install AI Dependencies
+      run: pip install openai numpy pandas scikit-learn requests matplotlib
+
+    - name: Run AI Fraud Prediction
+      run: python .github/scripts/ai_fraud_predictor.py
+
+    - name: Send Alerts if Risk is High
+      run: python .github/scripts/send_fraud_risk_alerts.py

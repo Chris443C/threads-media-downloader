@@ -1,0 +1,21 @@
+    - name: Build & Attach Docker Image
+      run: |
+        docker build -t your-dockerhub-username/threads-downloader .
+        docker save your-dockerhub-username/threads-downloader | gzip > threads-downloader.tar.gz
+
+    - name: Build AWS Lambda Package
+      run: |
+        zip -r threads_lambda.zip serverless/aws_lambda/
+
+    - name: Build GCP Cloud Function Package
+      run: |
+        zip -r threads_gcp.zip serverless/gcp_functions/
+
+    - name: Upload Release Assets
+      uses: softprops/action-gh-release@v1
+      with:
+        tag_name: ${{ env.VERSION }}
+        files: |
+          threads-downloader.tar.gz
+          threads_lambda.zip
+          threads_gcp.zip

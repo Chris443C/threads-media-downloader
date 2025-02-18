@@ -40,7 +40,7 @@ jobs:
         echo "Release Notes Generated"
     
     - name: Create GitHub Release
-      uses: softprops/action-gh-release@v1
+      uses: softprops/action-gh-release@v2
       with:
         tag_name: ${{ env.VERSION }}
         name: "Release ${{ env.VERSION }}"
@@ -62,7 +62,7 @@ jobs:
         zip -r threads_gcp.zip serverless/gcp_functions/
 
     - name: Upload Release Assets
-      uses: softprops/action-gh-release@v1
+      uses: softprops/action-gh-release@v2
       with:
         tag_name: ${{ env.VERSION }}
         files: |

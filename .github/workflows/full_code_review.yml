@@ -1,0 +1,34 @@
+name: Full Code Review
+
+on:
+  workflow_dispatch:  # Allows manual triggering of the workflow
+
+jobs:
+  code_review:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Generate Diff for Main Branch
+        run: |
+          git fetch origin main
+          git diff origin/main > diff.txt
+          echo "diff=$(cat diff.txt)" >> $GITHUB_ENV
+
+      - name: LLM Code Review
+        uses: luiyen/llm-code-review@v1.0.1
+        with:
+          apiKey: ${{ secrets.HUGGING_FACE_API_KEY }}
+          githubToken: ${{ secrets.GITHUB_TOKEN }}
+          githubRepository: ${{ github.repository }}
+          githubPullRequestNumber: 0  # Not associated with a PR
+          gitCommitHash: ${{ github.sha }}
+          pullRequestDiff: ${{ env.diff }}
+          repoId: "meta-llama/Llama-2-7b-chat-hf"
+          temperature: "0.2"
+          maxNewTokens: "250"
+          topK: "50"
+          topP: "0.95"
+          pullRequestDiffChunkSize: "3500"
+          logLevel: "DEBUG"

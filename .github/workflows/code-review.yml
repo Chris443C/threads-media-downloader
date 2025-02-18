@@ -1,0 +1,40 @@
+name: Manual Code Review
+
+on:
+  workflow_dispatch:
+    inputs:
+      pr_number:
+        description: 'Pull Request Number'
+        required: true
+
+jobs:
+  review:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v3
+      - name: Get Pull Request Diff
+        id: diff
+        run: |
+          git fetch origin pull/${{ github.event.inputs.pr_number }}/head:pr-${{ github.event.inputs.pr_number }}
+          git checkout pr-${{ github.event.inputs.pr_number }}
+          git diff origin/${{ github.event.inputs.pr_number }} > diff.txt
+          echo "diff=$(cat diff.txt)" >> $GITHUB_ENV
+      - name: LLM Code Review
+        uses: luiyen/llm-code-review@v1.0.1
+        with:
+          apiKey: ${{ secrets.HUGGING_FACE_API_KEY }}
+          githubToken: ${{ secrets.GITHUB_TOKEN }}
+          githubRepository: ${{ github.repository }}
+          githubPullRequestNumber: ${{ github.event.inputs.pr_number }}
+          gitCommitHash: ${{ github.sha }}
+          pullRequestDiff: ${{ env.diff }}
+          repoId: "meta-llama/Llama-2-7b-chat-hf"
+          temperature: "0.2"
+          maxNewTokens: "250"
+          topK: "50"
+          topP: "0.95"
+          pullRequestDiffChunkSize: "3500"
+          logLevel: "DEBUG"

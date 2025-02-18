@@ -10,7 +10,7 @@ jobs:
 
     steps:
     - name: Checkout Repository
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
 
     - name: Install AI Dependencies
       run: pip install openai numpy pandas scikit-learn requests matplotlib
